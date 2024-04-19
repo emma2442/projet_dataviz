@@ -18,7 +18,7 @@ Nous utilisons une vm parrot équipée de docker
 Pas de difficulté rencontrée
 
 <div align="center">
-  ![e864e43d-aa75-4fe0-901b-57531b10737e](https://github.com/emma2442/projet_dataviz/assets/102244339/29767519-9ce5-4e5a-8497-e45939960ef9)
+  <img src="https://github.com/emma2442/projet_dataviz/assets/102244339/29767519-9ce5-4e5a-8497-e45939960ef9" width="250" height="125">
 </div>
 
 # Partie 3
@@ -26,7 +26,8 @@ Pas de difficulté rencontrée
 Nous utilisons une vm parrot équipée de docker
 
 <div align="center">
-  <img src="https://github.com/emma2442/projet_dataviz/assets/102244339/2cbc74a7-fec5-4ae9-bd0b-f5988eb02848" width="250">
-
+  <img src="https://github.com/emma2442/projet_dataviz/assets/102244339/2cbc74a7-fec5-4ae9-bd0b-f5988eb02848" width="500">
+</div>
+<div align="center">
   <img src="https://github.com/emma2442/projet_dataviz/assets/102244339/9ee35b3e-fce5-464e-a3f0-85b85eb18af5" width="500">
 </div>
