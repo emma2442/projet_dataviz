@@ -64,7 +64,7 @@ Voici donc l'architecture que nous avons choisi pour notre projet. Nous sommes d
 Nous l'avons adapté à nos besoins, en effet nous avons donc un nouveau container qui est concacré à la récupération des données.
 Au sein de ce container nous avons donc un script qui va aller récupérer toutes les données concernant les Vélib à une intervalle de 5 minutes. Par la suite nous retrouvons donc le répertoire data qui contient les données récupéré par notre script. Nous allons égallement retrouver un repertoure classique Kibana ainsi que logstash.
 
-
+```
 projet_dataviz/
 ├── data/
 │   ├── stations.json
@@ -83,7 +83,7 @@ projet_dataviz/
     ├── recup.sh
     └── README.md
 └── docker-compose.yml
-
+```
 ## Fonctionnement individuel de chaque container. 
 ### Récupération des données
 
