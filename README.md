@@ -187,16 +187,16 @@ logstash:
     links:
       - elasticsearch
 ```
-Au sein de cette configuration nous allons principalement retrouver le fichier de conf que nous allons configurer juste après ainsi que les fichier qui doivent être accéssible. Par la suite nous avons donc le port sur lequel le service va donc écouter et être disponible. $${\color{red}ATTENTION}$$ tel que pour le container précédent il faut changer le lien du répertoire data.
+Au sein de cette configuration nous allons principalement retrouver le fichier de conf que nous allons configurer juste après ainsi que les fichier qui doivent être accéssible. Par la suite nous avons donc le port sur lequel le service va donc écouter et être disponible. $${\color{red}ATTENTION}$$ Tel que pour le container précédent il faut changer le lien du répertoire data.
 
 Dans notre cas notre fichier "stations.json" contenant les données est allimenté toutes les 5 minutes donc il nous faut le regarder en continu et lors de chaque ajout aller chercher pour récupérer les nouvelles données et les rendre disponible sur nos interfaces visuelles.
 
 Nous allons donc configurer tout cela dans le fichier :
-
+```
 ├── logstash/
 │   ├── config/
 │   │   └── logstash.conf
-
+```
 ```ruby
 input {
 	file {
