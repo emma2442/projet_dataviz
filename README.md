@@ -42,7 +42,7 @@ source de données : https://opendata.paris.fr/explore/dataset/velib-disponibili
 
 L'API nous permet de récupérer les données en JSON, 100 stations à la fois. Il y en a 1467 en tout. On incrémente l'offset dans l'url de 100 à la fois afin de récupérer 
 
-commande pour entrer dans le docker : docker exec -it elk_logstach /bin/bash
+commande pour entrer dans le docker : docker exec -it elk-logstash /bin/bash
 
 exporter les visualisations pour pas les faire
 
