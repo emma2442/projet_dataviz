@@ -18,12 +18,10 @@ Nous utilisons une vm parrot équipée de docker
 Pas de difficulté rencontrée
 
 <div align="center">
-  <img src="https://github.com/emma2442/projet_dataviz/assets/102244339/29767519-9ce5-4e5a-8497-e45939960ef9" width="700">
+  <img src="https://github.com/emma2442/projet_dataviz/assets/102244339/7343114d-f20b-4bb3-bdb9-3383875e0bee" width="700">
 </div>
 
 # Partie 3
-
-Nous utilisons une vm parrot équipée de docker
 
 <div align="center">
   <img src="https://github.com/emma2442/projet_dataviz/assets/102244339/2cbc74a7-fec5-4ae9-bd0b-f5988eb02848" width="500">
@@ -33,36 +31,25 @@ Nous utilisons une vm parrot équipée de docker
   <img src="https://github.com/emma2442/projet_dataviz/assets/102244339/9ee35b3e-fce5-464e-a3f0-85b85eb18af5" width="500">
 </div>
 
-(soucis avec le remove field de message)
+Nous n'avons pas réussi à retirer le champ "message", cela doit être dû à la version car en effectuant la même chose sur differents PC parfois ça fonctonnait et parfois non.
+
 
 # Projet
 
 sujet : velib (vélos et bornes)
 source de données : https://opendata.paris.fr/explore/dataset/velib-disponibilite-en-temps-reel/api/?disjunctive.name&disjunctive.is_installed&disjunctive.is_renting&disjunctive.is_returning&disjunctive.nom_arrondissement_communes
 
-L'API nous permet de récupérer les données en JSON, 100 stations à la fois. Il y en a 1467 en tout. On incrémente l'offset dans l'url de 100 à la fois afin de récupérer 
+L'API nous permet de récupérer les données en JSON, 100 stations à la fois. Il y en a 1467 en tout. On incrémente l'offset dans l'url de 100 à la fois afin de récupérer toutes les stations.
 
 commande pour entrer dans le docker : docker exec -it elk-logstash /bin/bash
 
-exporter les visualisations pour pas les faire
-
-pour les points geo : créer un template d'index dans cerebro de la forme
-PUT /votre_index
-{
-  "mappings": {
-    "properties": {
-      "coordonnees_geo": {
-        "type": "geo_point"
-      }
-    }
-  }
-}
 
 # Fonctionnement de notre projet 
-Voici donc l'architecture que nous avons choisi pour notre projet. Nous sommes donc parti de l'architecture que nous avons pu récupérer sur le GitHub suivant : https://gist.github.com/labynocle/35a4c5b7411c5497c0e30398531b580a
 
-Nous l'avons adapté à nos besoins, en effet nous avons donc un nouveau container qui est concacré à la récupération des données.
-Au sein de ce container nous avons donc un script qui va aller récupérer toutes les données concernant les Vélib à une intervalle de 5 minutes. Par la suite nous retrouvons donc le répertoire data qui contient les données récupéré par notre script. Nous allons égallement retrouver un repertoure classique Kibana ainsi que logstash.
+Nous sommes parti de l'architecture que nous avons pu récupérer sur le GitHub suivant : https://gist.github.com/labynocle/35a4c5b7411c5497c0e30398531b580a
+
+Nous l'avons adaptée à nos besoins, en effet nous avons un nouveau container qui est concacré à la récupération des données.
+Au sein de ce container nous avons un script qui récupère toutes les données concernant les Vélibs à une intervalle de 5 minutes. Par la suite, nous retrouvons le répertoire data qui contient les données récupérées par notre script. Nous allons également retrouver un repertoire classique Kibana ainsi que logstash.
 
 ```
 projet_dataviz/
@@ -84,10 +71,10 @@ projet_dataviz/
     └── README.md
 └── docker-compose.yml
 ```
-## Fonctionnement individuel de chaque container. 
+## Fonctionnement individuel de chaque container
 ### Récupération des données
 
-Afin de récupérer nos données nous utilisons donc un container utilisant la configuration suivante :
+Afin de récupérer nos données nous utilisons un container utilisant la configuration suivante :
 
 ```ruby
 # Use Alpine for a minimal base image
@@ -107,9 +94,9 @@ CMD ["/recup.sh"]
 ```
 Nous pouvons voir que nous construisons notre container avec une image alpine et que nous installons "curl" ainsi que "jq" afin de pouvoir récupérer et manipuler nos données dans le container. Par la suite nous allons copier le script à la racine de notre container, lui donner les droits d'éxécution pour enfin l'éxécuter.
 
-Ici nous allons donc venir récupérer les données de nos vélib grâce à notre script recup.sh qui est donc en Bash
+Ici nous allons venir récupérer les données de nos vélibs grâce à notre script recup.sh qui est donc en Bash.
 
-Au sein de notre script nous pouvons donc voir le fichier "stations.json" qui est donc notre fichier de sortie. Celui-ci est accéssible grâce à notre configuration sur le docker-compose. $${\color{red}ATTENTION}$$ Il faut impérativement changer le chemin du volumes où est présent le répertoir data du projet avant les ":", la seconde partie est donc le chemin au sein du container donc il ne faut pas le changer.
+Au sein de notre script nous pouvons voir le fichier "stations.json" qui est donc notre fichier de sortie. Celui-ci est accéssible grâce à notre configuration sur le docker-compose. $${\color{red}ATTENTION}$$ Il faut impérativement changer le chemin du volume où est présent le répertoir data du projet avant les ":", la seconde partie est donc le chemin au sein du container donc il ne faut pas le changer.
 
 ```ruby
 data_recuperation:
@@ -161,8 +148,8 @@ done
 
 ### Data
 
-Une fois nos données récupérées elle sont donc dans notre répertoire data où nous allons retrouver le fichier "stations.json" contenant tous les informations des Vélib.
-Maintenant il s'agit de les récupérer et de les utiliser.
+Une fois nos données récupérées elles sont donc dans notre répertoire data où nous allons retrouver le fichier "stations.json" contenant toutes les informations des vélibs.
+Maintenant il s'agit de les utiliser.
 
 ### Logstash
 
@@ -187,9 +174,9 @@ logstash:
     links:
       - elasticsearch
 ```
-Au sein de cette configuration nous allons principalement retrouver le fichier de conf que nous allons configurer juste après ainsi que les fichier qui doivent être accéssible. Par la suite nous avons donc le port sur lequel le service va donc écouter et être disponible. $${\color{red}ATTENTION}$$ Tel que pour le container précédent il faut changer le lien du répertoire data.
+Au sein de cette configuration nous allons principalement retrouver le fichier de conf que nous allons configurer juste après ainsi que les fichiers qui doivent être accéssibles. Il y a ensuite le port sur lequel le service va écouter et être disponible. $${\color{red}ATTENTION}$$ Tel que pour le container précédent il faut changer le lien du répertoire data.
 
-Dans notre cas notre fichier "stations.json" contenant les données est allimenté toutes les 5 minutes donc il nous faut le regarder en continu et lors de chaque ajout aller chercher pour récupérer les nouvelles données et les rendre disponible sur nos interfaces visuelles.
+Dans notre cas notre fichier "stations.json" contenant les données est allimenté toutes les 5 minutes donc il faut le regarder en continu et, lors de chaque ajout, aller chercher et récupérer les nouvelles données et les rendre disponibles sur nos interfaces visuelles.
 
 Nous allons donc configurer tout cela dans le fichier :
 ```
@@ -214,10 +201,6 @@ filter {
 		target => "[duedate]"
 		timezone => "Europe/Paris"
 	}
-	mutate {
-		convert => [ "[location]", "float" ]
-
-	}
 }
 
 output {
@@ -227,13 +210,13 @@ output {
 }
 ```
 
-Nous vennons donc commencer par regarder le fichier "stations.jon", ensuite nous allonsvenir traiter les données en récupérer le contenu des objets "message". Ensuite nous allons mettre la date au format souhaité avec le bon bon timezone, nous allons égallement convertir les valeurs de "longitude" et de "latitude" en "float" pour avoir des données à virgules.
+Nous vennons donc commencer par regarder le fichier "stations.jon", ensuite nous allons venir traiter les données en récupérer le contenu des objets "message". Ensuite nous allons mettre la date au format souhaité avec le bon bon timezone.
 
-Une fois tout cela fait nous allons donc envoyer nos données vers elasticsearch qui lui écoute sur le port 9200.
+Une fois tout cela fait nous envoyons nos données vers elasticsearch qui lui écoute sur le port 9200.
 
 ### Elastic Search 
 
-Elastic Search n'est lui configuré que au sein de notre docker-compse, il va venir récupérer un image puis nous allons le lancer avec certains critères tel que l'adresse ip host, ou encore le port. Et enfin nous allons venir lui attribuer les ports. 
+Elastic Search n'est lui configuré que au sein de notre docker-compse, il va venir récupérer une image puis nous allons le lancer avec certains critères tel que l'adresse ip host, ou encore le port. Enfin, nous lui attribuons les ports. 
 
 Elastic Search lui nous sert donc à venir stocker nos données correctement.
 ```ruby
@@ -254,7 +237,7 @@ Elastic Search lui nous sert donc à venir stocker nos données correctement.
 ```
 ### Cerebro 
 
-Cerebro va donc nous offrir une interface afin de pouvoir afficher le stockage de nos données, sa configuration est relativement simple car nous récupérer tout simplement son image, nous lui indiquons qu'il dépend de elasticsearch ainsi que le port sur lequel il doit écouter.
+Cerebro offre une interface afin de pouvoir afficher le stockage de nos données, sa configuration est relativement simple car nous récupérons tout simplement son image. Nous lui indiquons qu'il dépend de elasticsearch ainsi que le port sur lequel il doit écouter.
 
 ```ruby
   cerebro:
@@ -268,7 +251,7 @@ Cerebro va donc nous offrir une interface afin de pouvoir afficher le stockage d
 
 ### Kibana
 
-Kibana est l'interface que nous utilisons afin de pouvoir créer des visuel sur nos différentes données. Pour accéder à cette interface il nous faut donc créer le Dockerfile suivant :
+Kibana est l'interface que nous utilisons afin de pouvoir créer des visuel sur nos différentes données. Pour accéder à cette interface il nous faut créer le Dockerfile suivant :
 
 ```ruby
 FROM kibana:7.5.0
@@ -285,7 +268,7 @@ USER kibana
 CMD ["/tmp/entrypoint.sh"]
 ```
 
-Ici tout comme les précéndents container nous venons chercher une image, ne vennons mettre à jour la bibliothèque yum puis nous installons nmap. Nous vennons également récupérer notre script "entrypoint.sh", lui donner les droits d'éxécution puis nous vennons l'éxécuter.
+Ici, comme les containers précédents, nous venons chercher une image, puis nous mettons à jour la bibliothèque yum et nous installons nmap. Nous vennons également récupérer notre script "entrypoint.sh", lui donnons les droits d'éxécution puis l'éxécutons.
 
 Voici son contenu :
 
@@ -319,9 +302,9 @@ Maintenant regardons la configuration que nous avons pour le docker-compose :
       - elasticsearch
 ```
 
-Dans notre cas elle est relativement faible puisque nous retrouvons seulement les fichier auquels il à accès, la dépendance avec elasticsearch et enfin le port "5601".
+Dans notre cas elle est relativement rapide puisque nous retrouvons seulement les fichier auquels il à accès, la dépendance avec elasticsearch et enfin le port "5601".
 
-Concernant le fichier de config "kibana.yml", il permet à toutes les adresses IP d'accéder au service mais également il vient configurer le monitorinf et le nom du server.
+Concernant le fichier de config "kibana.yml", il permet à toutes les adresses IP d'accéder au service mais également de configurer le monitorinf et le nom du server.
 
 ```ruby
 # From https://github.com/elastic/dockerfiles/tree/v6.7.0/kibana
@@ -330,3 +313,37 @@ server.host: "0"
 elasticsearch.hosts: [ "http://elasticsearch:9200" ]
 xpack.monitoring.ui.container.elasticsearch.enabled: true
 ```
+
+# Visualisation dans Kibana
+
+```ruby
+input {
+        file {
+    path => "/usr/share/logstash/data/stations.json"
+  }
+}
+filter {
+        json {
+                source => "message"
+                remove_field => "message"
+        }
+        date {
+                match => [ "[duedate]", "ISO8601" ]
+                target => "[duedate]"
+                timezone => "Europe/Paris"
+        }
+        mutate {
+                add_field => { "[coordonnees_geo2]" => "%{[coordonnees_geo][lat]},%{[coordonnees_geo][lon]}" }
+        }
+        mutate {
+                remove_field => ["coordonnees_geo"]
+        }
+}
+output {
+        elasticsearch {
+                hosts => "elasticsearch:9200"
+                index => "logs"
+        }
+}
+```
+
