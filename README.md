@@ -437,7 +437,7 @@ Maintenant que les coordonnées sont bien des geo_points, nous avons fait une pr
 <img width="691" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/5d10a3eb-bd0c-4644-9972-fd56d6de58cd">
 </div>  
 
-De la même manière, nous avons fait une map des stations mais cette fois-ci oritentée sur le nombre de vélo disponibles, lorsque le symbol de vélo est rouge c'est qu'il n'y en a aucun de disponible.  
+De la même manière, nous avons fait une map des stations mais cette fois-ci oritentée sur le nombre de vélo disponibles, lorsque le symbole de vélo est rouge c'est qu'il n'y en a aucun de disponible.  
 
 <div align="center">
 <img width="698" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/2edb5f91-182b-4919-abcd-55b0d774da23">
