@@ -9,7 +9,7 @@ Nous utilisons une vm parrot équipée de docker
 
 <div align="center">
   <img src="https://github.com/emma2442/projet_dataviz/assets/102244339/660bcd4b-7913-46c9-8ed3-92f0be0e61ca" width="500">
-
+  
   <img width="1437" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/f6916171-e19f-4ee8-9651-ee62cd1f0204">
 </div>
 
@@ -74,7 +74,7 @@ projet_dataviz/
 ## Fonctionnement individuel de chaque container
 ### Récupération des données
 
-Afin de récupérer nos données nous utilisons un container utilisant la configuration suivante :
+Afin de récupérer nos données nous utilisons un container avec la configuration suivante :
 
 ```ruby
 # Use Alpine for a minimal base image
@@ -96,7 +96,7 @@ Nous pouvons voir que nous construisons notre container avec une image alpine et
 
 Ici nous allons venir récupérer les données de nos vélibs grâce à notre script recup.sh qui est donc en Bash.
 
-Au sein de notre script nous pouvons voir le fichier "stations.json" qui est donc notre fichier de sortie. Celui-ci est accéssible grâce à notre configuration sur le docker-compose. $${\color{red}ATTENTION}$$ Il faut impérativement changer le chemin du volume où est présent le répertoir data du projet avant les ":", la seconde partie est donc le chemin au sein du container donc il ne faut pas le changer.
+Au sein de notre script nous pouvons voir le fichier "stations.json" qui est notre fichier de sortie. Celui-ci est accéssible grâce à notre configuration sur le docker-compose. $${\color{red}ATTENTION}$$ Il faut impérativement changer le chemin du volume où est présent le répertoir data du projet avant les ":", la seconde partie est le chemin au sein du container donc il ne faut pas le changer.
 
 ```ruby
 data_recuperation:
@@ -148,8 +148,7 @@ done
 
 ### Data
 
-Une fois nos données récupérées elles sont donc dans notre répertoire data où nous allons retrouver le fichier "stations.json" contenant toutes les informations des vélibs.
-Maintenant il s'agit de les utiliser.
+Une fois nos données récupérées, elles sont placées dans notre répertoire data où nous allons retrouver le fichier "stations.json" contenant toutes les informations des vélibs.
 
 ### Logstash
 
@@ -159,7 +158,7 @@ Création du container avec l'import de l'image docker :
 FROM logstash:7.5.0
 ```
 
-Logstash va maintenant nous servir à pouvoir récupérer les données ainsi qu'à les traiter. Pour ce faire nous avons donc la configuraiton docker-compose suivante :
+Logstash va nous servir à récupérer les données ainsi qu'à les traiter. Pour ce faire nous avons donc la configuraiton docker-compose suivante :
 
 ```ruby
 logstash:
@@ -174,7 +173,7 @@ logstash:
     links:
       - elasticsearch
 ```
-Au sein de cette configuration nous allons principalement retrouver le fichier de conf que nous allons configurer juste après ainsi que les fichiers qui doivent être accéssibles. Il y a ensuite le port sur lequel le service va écouter et être disponible. $${\color{red}ATTENTION}$$ Tel que pour le container précédent il faut changer le lien du répertoire data.
+Au sein de cette configuration nous allons principalement retrouver le fichier de conf que nous allons configurer juste après, ainsi que les fichiers qui doivent être accéssibles. Il y a ensuite le port sur lequel le service va écouter et être disponible. $${\color{red}ATTENTION}$$ Tel que pour le container précédent il faut changer le lien du répertoire data.
 
 Dans notre cas notre fichier "stations.json" contenant les données est allimenté toutes les 5 minutes donc il faut le regarder en continu et, lors de chaque ajout, aller chercher et récupérer les nouvelles données et les rendre disponibles sur nos interfaces visuelles.
 
@@ -210,13 +209,13 @@ output {
 }
 ```
 
-Nous vennons donc commencer par regarder le fichier "stations.jon", ensuite nous allons venir traiter les données en récupérer le contenu des objets "message". Ensuite nous allons mettre la date au format souhaité avec le bon bon timezone.
+Nous commençons par regarder le fichier "stations.jon", ensuite nous allons venir traiter les données et récupérer le contenu des objets "message". Nous mettons enfin la date au format souhaité avec la bonne timezone.
 
 Une fois tout cela fait nous envoyons nos données vers elasticsearch qui lui écoute sur le port 9200.
 
 ### Elastic Search 
 
-Elastic Search n'est lui configuré que au sein de notre docker-compse, il va venir récupérer une image puis nous allons le lancer avec certains critères tel que l'adresse ip host, ou encore le port. Enfin, nous lui attribuons les ports. 
+Elastic Search n'est configuré que au sein de notre docker-compose, il va venir récupérer une image puis nous allons le lancer avec certains critères tel que l'adresse ip host, ou encore le port. Enfin, nous lui attribuons les ports. 
 
 Elastic Search lui nous sert donc à venir stocker nos données correctement.
 ```ruby
@@ -268,7 +267,7 @@ USER kibana
 CMD ["/tmp/entrypoint.sh"]
 ```
 
-Ici, comme les containers précédents, nous venons chercher une image, puis nous mettons à jour la bibliothèque yum et nous installons nmap. Nous vennons également récupérer notre script "entrypoint.sh", lui donnons les droits d'éxécution puis l'éxécutons.
+Ici, comme les containers précédents, nous venons chercher une image, puis nous mettons à jour la bibliothèque yum et nous installons nmap. Nous venons également récupérer notre script "entrypoint.sh", lui donnons les droits d'éxécution puis l'éxécutons.
 
 Voici son contenu :
 
@@ -316,53 +315,70 @@ xpack.monitoring.ui.container.elasticsearch.enabled: true
 
 # Visualisation dans Kibana
 
-Nos données sont structurées de la manière suivante :
-
-Pour chaque station de vélib :
-	- stationcode
-	- name
-	- is_installed
-	- capacity
- 	- numdocksavailable
-	- numbikesavailable
-	- mechanical
-	- ebike
-	- is_renting
-	- is_returning
-	- duedate
-	- coordonnees_geo (avec sous-champs lon et lat)
- 	- nom_arrondissement_communes
+Nos données sont structurées de la manière suivante :  
+  
+Pour chaque station de vélib :  
+	- stationcode  
+	- name  
+	- is_installed  
+	- capacity  
+ 	- numdocksavailable  
+	- numbikesavailable  
+	- mechanical  
+	- ebike  
+	- is_renting  
+	- is_returning  
+	- duedate  
+	- coordonnees_geo (avec sous-champs lon et lat)  
+ 	- nom_arrondissement_communes  
 
 Nous commençons par compter le nombre de stations et de villes (nom_arrondissement_communes) différents que nous avons.
 
+<div align="center">
 <img width="692" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/e28208c0-fba8-47da-91ee-8ec0b0abbfa6">
+</div>
 
 On peut voir que si on filtre sur paris, nous avons 971 stations et evidemment une ville.
 
+<div align="center">
 <img width="695" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/cb3dc831-569a-4cb9-be7f-1d810995833f">
+</div>
 
 Pour avoir le nombre de station par ville, on fait un bar chart (échelle logarithmique car paris a beaucoup plus de stations que les autres villes ce qui rend le graphe illisible avec une échelle linéaire).
 
+<div align="center">
 <img width="1385" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/a0aff792-eb9f-47cb-822c-25f7c75da7b6">
+</div>
 
 Ici nous avons le nombre de vélos méchaniques et électriques disponibles par ville.
 
+<div align="center">
 <img width="1387" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/7e941ac6-aa45-4ef2-b41c-343c274bef1b">
+</div>
 
 Voici un pie chart des stations en service, nous pouvons voir que 0.07% des stations ne le sont pas, ce qui est très faible.
 
+<div align="center">
 <img width="690" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/c75e0a7a-ec86-4b8e-a57a-5ffb54644a71">
+</div>
 
 Ici nous avons le nombre moyen de docks disponibles par station, ainsi que le nombre de vélos mécaniques et électriques. On observe qu'il y a en moyenne plus de docks disponibles que de vélos mécaniques et électriques réunis.
 
+<div align="center">
 <img width="693" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/552daa06-4601-4f9a-8af2-bbe927283fb7">
+</div>
 
 En filtrant sur une station (Place Nelson Mandela) nous pouvons voir que les proportions sont différentes et il y a beaucoup moins de vélo disponibles.
 
+<div align="center">
 <img width="690" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/5c475559-7ad0-4332-b20b-46c4e698f012">
+</div>
 
 Nous avons représenté l'évolution temporelle du nombre de vélos (mécaniques et électriques) disponibles, il serait aussi interessant de filtrer par station ou par ville.
+
+<div align="center">
 <img width="691" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/d5052c26-1d3c-40a8-b107-57436e4e97e0">
+</div>
 
 Une visulatisation interessante serait d'avoir une carte qui affiche toutes les stations de vélib. Nous avons les coordonnées de chaque station, mais pour créer une map dans kibana il faut que ce champ soit qualifié de géo_point et ce n'est pas le cas automatiquement.
 
@@ -415,10 +431,13 @@ output {
 
 Maintenant que les coordonnées sont bien des geo_points, nous avons fait une première visualisation de toutes les stations. La taille du point est proportionelle à la capacité de la station. Si la station est complète (aucun dock disponible) alors il apparait en rouge. Enfin, pour chaque station, nous affichons le nom, le nombre de vélos et docks disponibles, et l'heure à laquelle l'information a été récupérée.
 
+<div align="center">
 <img width="692" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/a847084b-4248-4253-8013-640d21fac09e">
 <img width="691" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/5d10a3eb-bd0c-4644-9972-fd56d6de58cd">
+</div>
 
 De la même manière, nous avons fait une map des stations mais cette fois-ci oritentée sur le nombre de vélo disponibles, lorsque le symbol de vélo est rouge c'est qu'il n'y en a aucun de disponible.
 
+<div align="center">
 <img width="698" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/2edb5f91-182b-4919-abcd-55b0d774da23">
-
+</div>
