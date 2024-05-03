@@ -380,7 +380,7 @@ Nous avons représenté l'évolution temporelle du nombre de vélos (mécaniques
 <img width="691" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/d5052c26-1d3c-40a8-b107-57436e4e97e0">
 </div>  
 
-Une visulatisation interessante serait d'avoir une carte qui affiche toutes les stations de vélib. Nous avons les coordonnées de chaque station, mais pour créer une map dans kibana il faut que ce champ soit qualifié de géo_point et ce n'est pas le cas automatiquement.  
+Une visulatisation pertinante serait d'avoir une carte qui affiche toutes les stations de vélib. Nous avons les coordonnées de chaque station, mais pour créer une map dans kibana il faut que ce champ soit qualifié de géo_point et ce n'est pas le cas automatiquement.  
 
 Nous devons donc créer un template d'index dans cerebro qui indique le mapping tel que :  
 
@@ -395,7 +395,7 @@ Nous devons donc créer un template d'index dans cerebro qui indique le mapping 
         },
 ```
 
-Le souci est que le champ est de la forme : "coordonnees_geo": {"lon": 2.2754641655975, "lat": 48.822036188382} et kibana accepte le champ en tant que geo_point seulement si c'est une liste avec longitude en premier puis latitude mais dans les "lon" et "lat". Nous avons donc aussi modifié le logstash.  
+Le souci est que le champ est de la forme : "coordonnees_geo": {"lon": 2.2754641655975, "lat": 48.822036188382} et kibana accepte le champ en tant que geo_point seulement si c'est une liste avec longitude en premier puis latitude mais sans les "lon" et "lat". Nous avons donc aussi modifié le logstash.  
 
 
 ```ruby
@@ -432,6 +432,7 @@ output {
 Maintenant que les coordonnées sont bien des geo_points, nous avons fait une première visualisation de toutes les stations. La taille du point est proportionelle à la capacité de la station. Si la station est complète (aucun dock disponible) alors il apparait en rouge. Enfin, pour chaque station, nous affichons le nom, le nombre de vélos et docks disponibles, et l'heure à laquelle l'information a été récupérée.  
 
 <div align="center">
+<img width="695" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/e76c2589-b436-47b7-8f63-6189212c1e6a">
 <img width="692" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/a847084b-4248-4253-8013-640d21fac09e">
 <img width="691" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/5d10a3eb-bd0c-4644-9972-fd56d6de58cd">
 </div>  
