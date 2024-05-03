@@ -26,11 +26,11 @@ Pas de difficulté rencontrée
 <div align="center">
   <img src="https://github.com/emma2442/projet_dataviz/assets/102244339/2cbc74a7-fec5-4ae9-bd0b-f5988eb02848" width="500">
 </div>
-
+    
 <div align="center">
   <img src="https://github.com/emma2442/projet_dataviz/assets/102244339/9ee35b3e-fce5-464e-a3f0-85b85eb18af5" width="500">
 </div>
-
+  
 Nous n'avons pas réussi à retirer le champ "message", cela doit être dû à la version car en effectuant la même chose sur differents PC parfois ça fonctonnait et d'autres fois non.
 
 
@@ -332,57 +332,57 @@ Pour chaque station de vélib :
 	- coordonnees_geo (avec sous-champs lon et lat)  
  	- nom_arrondissement_communes  
 
-Nous commençons par compter le nombre de stations et de villes (nom_arrondissement_communes) différents que nous avons.
+Nous commençons par compter le nombre de stations et de villes (nom_arrondissement_communes) différents que nous avons.  
 
 <div align="center">
 <img width="692" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/e28208c0-fba8-47da-91ee-8ec0b0abbfa6">
 </div>
-
-On peut voir que si on filtre sur paris, nous avons 971 stations et evidemment une ville.
+  
+On peut voir que si on filtre sur Paris, nous avons 971 stations et evidemment une ville.  
 
 <div align="center">
 <img width="695" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/cb3dc831-569a-4cb9-be7f-1d810995833f">
 </div>
-
-Pour avoir le nombre de station par ville, on fait un bar chart (échelle logarithmique car paris a beaucoup plus de stations que les autres villes ce qui rend le graphe illisible avec une échelle linéaire).
+  
+Pour avoir le nombre de station par ville, on fait un bar chart (échelle logarithmique car Paris a beaucoup plus de stations que les autres villes ce qui rend le graphe illisible avec une échelle linéaire).  
 
 <div align="center">
 <img width="1385" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/a0aff792-eb9f-47cb-822c-25f7c75da7b6">
 </div>
-
-Ici nous avons le nombre de vélos méchaniques et électriques disponibles par ville.
+  
+Ici nous avons le nombre de vélos méchaniques et électriques disponibles par ville.  
 
 <div align="center">
 <img width="1387" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/7e941ac6-aa45-4ef2-b41c-343c274bef1b">
 </div>
-
-Voici un pie chart des stations en service, nous pouvons voir que 0.07% des stations ne le sont pas, ce qui est très faible.
+  
+Voici un pie chart des stations en service, nous pouvons voir que 0.07% des stations ne le sont pas, ce qui est très faible.  
 
 <div align="center">
 <img width="690" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/c75e0a7a-ec86-4b8e-a57a-5ffb54644a71">
-</div>
+</div>  
 
-Ici nous avons le nombre moyen de docks disponibles par station, ainsi que le nombre de vélos mécaniques et électriques. On observe qu'il y a en moyenne plus de docks disponibles que de vélos mécaniques et électriques réunis.
+Ici nous avons le nombre moyen de docks disponibles par station, ainsi que le nombre de vélos mécaniques et électriques. On observe qu'il y a en moyenne plus de docks disponibles que de vélos mécaniques et électriques réunis.  
 
 <div align="center">
 <img width="693" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/552daa06-4601-4f9a-8af2-bbe927283fb7">
-</div>
+</div>  
 
-En filtrant sur une station (Place Nelson Mandela) nous pouvons voir que les proportions sont différentes et il y a beaucoup moins de vélo disponibles.
+En filtrant sur une station (Place Nelson Mandela) nous pouvons voir que les proportions sont différentes et il y a beaucoup moins de vélo disponibles.  
 
 <div align="center">
 <img width="690" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/5c475559-7ad0-4332-b20b-46c4e698f012">
-</div>
+</div>  
 
-Nous avons représenté l'évolution temporelle du nombre de vélos (mécaniques et électriques) disponibles, il serait aussi interessant de filtrer par station ou par ville.
+Nous avons représenté l'évolution temporelle du nombre de vélos (mécaniques et électriques) disponibles, il serait aussi interessant de filtrer par station ou par ville.  
 
 <div align="center">
 <img width="691" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/d5052c26-1d3c-40a8-b107-57436e4e97e0">
-</div>
+</div>  
 
-Une visulatisation interessante serait d'avoir une carte qui affiche toutes les stations de vélib. Nous avons les coordonnées de chaque station, mais pour créer une map dans kibana il faut que ce champ soit qualifié de géo_point et ce n'est pas le cas automatiquement.
+Une visulatisation interessante serait d'avoir une carte qui affiche toutes les stations de vélib. Nous avons les coordonnées de chaque station, mais pour créer une map dans kibana il faut que ce champ soit qualifié de géo_point et ce n'est pas le cas automatiquement.  
 
-Nous devons donc créer un template d'index dans cerebro qui indique le mapping tel que :
+Nous devons donc créer un template d'index dans cerebro qui indique le mapping tel que :  
 
 ```ruby
   "mappings": { - 
@@ -395,7 +395,7 @@ Nous devons donc créer un template d'index dans cerebro qui indique le mapping 
         },
 ```
 
-Le souci est que le champ est de la forme : "coordonnees_geo": {"lon": 2.2754641655975, "lat": 48.822036188382} et kibana accepte le champ en tant que geo_point seulement si c'est une liste avec longitude en premier puis latitude mais dans les "lon" et "lat". Nous avons donc aussi modifié le logstash.
+Le souci est que le champ est de la forme : "coordonnees_geo": {"lon": 2.2754641655975, "lat": 48.822036188382} et kibana accepte le champ en tant que geo_point seulement si c'est une liste avec longitude en premier puis latitude mais dans les "lon" et "lat". Nous avons donc aussi modifié le logstash.  
 
 
 ```ruby
@@ -429,15 +429,15 @@ output {
 }
 ```
 
-Maintenant que les coordonnées sont bien des geo_points, nous avons fait une première visualisation de toutes les stations. La taille du point est proportionelle à la capacité de la station. Si la station est complète (aucun dock disponible) alors il apparait en rouge. Enfin, pour chaque station, nous affichons le nom, le nombre de vélos et docks disponibles, et l'heure à laquelle l'information a été récupérée.
+Maintenant que les coordonnées sont bien des geo_points, nous avons fait une première visualisation de toutes les stations. La taille du point est proportionelle à la capacité de la station. Si la station est complète (aucun dock disponible) alors il apparait en rouge. Enfin, pour chaque station, nous affichons le nom, le nombre de vélos et docks disponibles, et l'heure à laquelle l'information a été récupérée.  
 
 <div align="center">
 <img width="692" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/a847084b-4248-4253-8013-640d21fac09e">
 <img width="691" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/5d10a3eb-bd0c-4644-9972-fd56d6de58cd">
-</div>
+</div>  
 
-De la même manière, nous avons fait une map des stations mais cette fois-ci oritentée sur le nombre de vélo disponibles, lorsque le symbol de vélo est rouge c'est qu'il n'y en a aucun de disponible.
+De la même manière, nous avons fait une map des stations mais cette fois-ci oritentée sur le nombre de vélo disponibles, lorsque le symbol de vélo est rouge c'est qu'il n'y en a aucun de disponible.  
 
 <div align="center">
 <img width="698" alt="image" src="https://github.com/emma2442/projet_dataviz/assets/102244339/2edb5f91-182b-4919-abcd-55b0d774da23">
-</div>
+</div>  
